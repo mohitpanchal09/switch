@@ -47,6 +47,7 @@ const Circle = styled.div`
 const Image = styled.img`
   height: 75%;
   z-index: 2;
+  // mix-blend-mode: multiply;
 `;
 
 const Icon = styled.div`
@@ -75,9 +76,15 @@ const Product = ({ item }) => {
         <Icon>
           <ShoppingCartOutlined />
         </Icon>
-        <Icon>
+        <Icon
+          style={{
+            textAlign: "center",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <Link to={`/product/${item._id}`}>
-            <SearchOutlined />
+            <SearchOutlined style={{ color: "black" }} />
           </Link>
         </Icon>
         <Icon>

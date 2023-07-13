@@ -1,21 +1,21 @@
 export const sliderItems = [
   {
       id:1,
-      img:"https://www.pngpix.com/wp-content/uploads/2016/07/PNGPIX-COM-Attractive-Young-Woman-Standing-PNG-Image-500x967.png",
+      img:"https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
       title:"SUMMER SALE",
       desc:"DON'T COMPROMOSE ON STYLE! GET FLAT 10% OFF FOR LATEST ARRIVALS",
       bg: "f5fafd",
   },
   {
       id:2,
-      img:"https://cdn.discordapp.com/attachments/891025496601661504/992782183045537953/model-png-1965.png",
+      img: "https://i.ibb.co/DG69bQ4/2.png",
       title:"WINTER SALE",
       desc:"DON'T COMPROMOSE ON STYLE! GET FLAT 10% OFF FOR LATEST ARRIVALS",
       bg: "fcd1ed",
   },
   {
       id:3,
-      img:"https://cdn.discordapp.com/attachments/891025496601661504/992782627062951946/model-png-1976.png",
+      img: "https://i.ibb.co/cXFnLLV/3.png",
       title:"MONDAY SALE",
       desc:"DON'T COMPROMOSE ON STYLE! GET FLAT 10% OFF FOR LATEST ARRIVALS",
       bg: "fbf0f4",

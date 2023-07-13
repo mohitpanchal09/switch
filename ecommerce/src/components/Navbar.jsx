@@ -3,8 +3,10 @@ import { Search, ShoppingCartOutlined } from "@material-ui/icons";
 import React from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
-import { useSelector } from "react-redux";
+
 import { Link } from "react-router-dom";
+import { logout } from "../redux/userRedux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Container = styled.div`
   height: 60px;
@@ -69,7 +71,17 @@ const MenuItem = styled.div`
 `;
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.currentUser);
   const quantity = useSelector((state) => state.cart.quantity);
+  const handleLogout = (e) => {
+    localStorage.removeItem(user);
+    e.preventDefault();
+    dispatch(logout()); // Dispatch the logout action
+    console.log(user);
+    alert("You have been logged out");
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -81,11 +93,24 @@ const Navbar = () => {
           </SearchContainer>
         </Left>
         <Center>
-          <Logo>LAMA.</Logo>
+          <Link to="/" style={{ textDecoration: "none", color: "black" }}>
+            <Logo>Switch.</Logo>
+          </Link>
         </Center>
         <Right>
-          <MenuItem>REGISTER</MenuItem>
-          <MenuItem>SIGN IN</MenuItem>
+          <Link to="/register" style={{ textDecoration: "none" }}>
+            <MenuItem>REGISTER</MenuItem>
+          </Link>
+
+          {user ? (
+            <MenuItem onClick={handleLogout}>SIGN OUT</MenuItem>
+          ) : (
+            <Link to="/login" style={{ textDecoration: "none" }}>
+              {" "}
+              <MenuItem>LOGIN</MenuItem>
+            </Link>
+          )}
+
           <Link to="/cart">
             <MenuItem>
               <Badge badgeContent={quantity} color="primary">
