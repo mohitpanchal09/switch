@@ -3,6 +3,7 @@ import ProductList from "./pages/ProductList";
 import Product from "./pages/Product";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Cancel from "./pages/Cancel";
 import Cart from "./pages/Cart";
 // import { Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
@@ -25,7 +26,8 @@ function App() {
         <Route path="/products/:category" element={<ProductList />}></Route>
         <Route path="/product/:id" element={<Product />}></Route>
         <Route path="/cart" element={<Cart />}></Route>
-        <Route path="/success" element={<Success />}></Route>
+        <Route path="/success" element={<Success />} />
+        <Route path="/cancel" element={<Cancel />} />
         <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
         <Route
           path="/register"

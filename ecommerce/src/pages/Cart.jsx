@@ -7,6 +7,7 @@ import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
 import StripeCheckout from "react-stripe-checkout";
 import { useEffect, useState } from "react";
+// import { userRequest } from "../requestMethods";
 import { userRequest } from "../requestMethods";
 import { Navigate, useNavigate } from "react-router";
 
@@ -156,32 +157,39 @@ const Button = styled.button`
   color: white;
   font-weight: 600;
 `;
-const KEY = process.env.REACT_APP_STRIPE;
+
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
-  const [stripeToken, setStripeToken] = useState(null);
-  const history = useNavigate();
-  const user = useSelector((state) => state.user.currentUser);
-
-  const onToken = (token) => {
-    setStripeToken(token);
+  const KEY = process.env.REACT_APP_STRIPE;
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const checkout = () => {
+    fetch("http://localhost:5000/api/checkout/create-checkout-session", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      mode: "cors",
+      body: JSON.stringify({
+        items: cart.products.map((product) => ({
+          id: product._id,
+          quantity: product.quantity,
+          price: product.price,
+          name: product.title,
+        })),
+      }),
+    })
+      .then((res) => {
+        if (res.ok) return res.json();
+        return res.json().then((json) => Promise.reject(json));
+      })
+      .then(({ url }) => {
+        window.location = url;
+      })
+      .catch((e) => {
+        console.log(e.error);
+      });
   };
 
-  useEffect(() => {
-    const makeRequest = async () => {
-      try {
-        const res = await userRequest.post("/checkout/payment", {
-          tokenId: stripeToken.id,
-          amount: 500,
-        });
-        history.push("/success", {
-          stripeData: res.data,
-          products: cart,
-        });
-      } catch {}
-    };
-    stripeToken && makeRequest();
-  }, [stripeToken, cart.total, history]);
   return (
     <Container>
       <Navbar />
@@ -247,22 +255,13 @@ const Cart = () => {
               <SummaryItemText>Total</SummaryItemText>
               <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
             </SummaryItem>
-            {user ? (
-              <StripeCheckout
-                name="Lama Shop"
-                image="https://avatars.githubusercontent.com/u/1486366?v=4"
-                billingAddress
-                shippingAddress
-                description={`Your total is $${cart.total}`}
-                amount={cart.total * 100}
-                token={onToken}
-                stripeKey={KEY}
-              >
-                <Button style={{ cursor: "pointer" }}>CHECKOUT NOW</Button>
-              </StripeCheckout>
-            ) : (
-              <Button style={{ cursor: "pointer" }}>You need to login</Button>
-            )}
+            <Button
+              onClick={checkout}
+              className="bg-green-400 text-white px-8 py-4 rounded-md text-2xl 
+              font-semibold"
+            >
+              Checkout
+            </Button>
           </Summary>
         </Bottom>
       </Wrapper>

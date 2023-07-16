@@ -1,48 +1,27 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useLocation } from "react-router";
-import { userRequest } from "../requestMethods";
+import React from "react";
+// import success from "../assets/success.png"
+import { Link } from "react-router-dom";
 
 const Success = () => {
-  const location = useLocation();
-  //in Cart.jsx I sent data and cart. Please check that page for the changes.(in video it's only data)
-  const data = location.state.stripeData;
-  const cart = location.state.cart;
-  const currentUser = useSelector((state) => state.user.currentUser);
-  const [orderId, setOrderId] = useState(null);
-
-  useEffect(() => {
-    const createOrder = async () => {
-      try {
-        const res = await userRequest.post("/orders", {
-          userId: currentUser._id,
-          products: cart.products.map((item) => ({
-            productId: item._id,
-            quantity: item._quantity,
-          })),
-          amount: cart.total,
-          address: data.billing_details.address,
-        });
-        setOrderId(res.data._id);
-      } catch {}
-    };
-    data && createOrder();
-  }, [cart, data, currentUser]);
-
   return (
     <div
-      style={{
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
+      className="grid place-items-center w-full lg:h-screen h-full
+     font-raleway bg-[#F7F7F7]"
     >
-      {orderId
-        ? `Order has been created successfully. Your order number is ${orderId}`
-        : `Successfull. Your order is being prepared...`}
-      <button style={{ padding: 10, marginTop: 20 }}>Go to Homepage</button>
+      <div className="max-w-5xl rounded flex flex-col">
+        <span className="text-green-600 text-5xl">Payment successful</span>
+        <span className="text-yellow-600 text-center mt-8 text-2xl font-bold">
+          Your order is in our system
+        </span>
+        <div className="flex justify-end items-center mx-auto my-24 w-60">
+          {/* <img src={success} alt=""/> */}
+        </div>
+        <div className="my-10 mx-auto">
+          <Link to="/" className="underline text-xl underline-offset-4">
+            Back to Home Page
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };
