@@ -16,10 +16,7 @@ function App() {
   
   
   const user = useSelector((state) => state.user.currentUser);
-  // user =
-  // if(user){
-  //   setAdmin(true)
-  // }
+  
   
   return (
     <Router >

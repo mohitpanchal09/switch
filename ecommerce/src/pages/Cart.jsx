@@ -8,7 +8,7 @@ import { mobile } from "../responsive";
 import StripeCheckout from "react-stripe-checkout";
 import { useEffect, useState } from "react";
 // import { userRequest } from "../requestMethods";
-import { userRequest } from "../requestMethods";
+import { publicRequest, userRequest } from "../requestMethods";
 import { Navigate, useNavigate } from "react-router";
 
 const Container = styled.div``;
@@ -160,9 +160,31 @@ const Button = styled.button`
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
+  // console.log(cart);
   const KEY = process.env.REACT_APP_STRIPE;
   const currentUser = useSelector((state) => state.user.currentUser);
-  const checkout = () => {
+  const TOKEN = currentUser?.accessToken;
+  const order = {
+    userId: currentUser.others._id,
+    products: cart.products.map((item) => ({
+      productId: item._id,
+      quantity: item._quantity,
+    })),
+    amount: cart.total,
+    address: "IND",
+  };
+  const checkout = async () => {
+    try {
+      const res = await userRequest.post("/orders", order, {
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      });
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+
     fetch("http://localhost:5000/api/checkout/create-checkout-session", {
       method: "POST",
       headers: {
@@ -255,13 +277,17 @@ const Cart = () => {
               <SummaryItemText>Total</SummaryItemText>
               <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
             </SummaryItem>
-            <Button
-              onClick={checkout}
-              className="bg-green-400 text-white px-8 py-4 rounded-md text-2xl 
+            {currentUser ? (
+              <Button
+                onClick={checkout}
+                className="bg-green-400 text-white px-8 py-4 rounded-md text-2xl 
               font-semibold"
-            >
-              Checkout
-            </Button>
+              >
+                Checkout
+              </Button>
+            ) : (
+              <Button>You need to login </Button>
+            )}
           </Summary>
         </Bottom>
       </Wrapper>

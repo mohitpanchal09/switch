@@ -49,6 +49,7 @@ const Input = styled.input`
 const Center = styled.div`
   flex: 1;
   text-align: center;
+  ${mobile({ display: "none" })}
 `;
 
 const Logo = styled.h1`
@@ -60,7 +61,7 @@ const Right = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  ${mobile({ flex: 2, justifyContent: "center" })}
+  ${mobile({ flex: 1, justifyContent: "center" })}
 `;
 
 const MenuItem = styled.div`
@@ -98,20 +99,41 @@ const Navbar = () => {
           </Link>
         </Center>
         <Right>
-          <Link to="/register" style={{ textDecoration: "none" }}>
-            <MenuItem>REGISTER</MenuItem>
-          </Link>
+          {user ? (
+            <Link
+              to={"/orders/find/" + user.others._id}
+              style={{ textDecoration: "none", color: "black" }}
+            >
+              <MenuItem>ORDERS</MenuItem>
+            </Link>
+          ) : (
+            <></>
+          )}
+          {user ? (
+            <></>
+          ) : (
+            <Link
+              to="/register"
+              style={{ textDecoration: "none", color: "black" }}
+            >
+              {" "}
+              <MenuItem>Register</MenuItem>
+            </Link>
+          )}
 
           {user ? (
             <MenuItem onClick={handleLogout}>SIGN OUT</MenuItem>
           ) : (
-            <Link to="/login" style={{ textDecoration: "none" }}>
+            <Link
+              to="/login"
+              style={{ textDecoration: "none", color: "black" }}
+            >
               {" "}
               <MenuItem>LOGIN</MenuItem>
             </Link>
           )}
 
-          <Link to="/cart">
+          <Link to="/cart" style={{ textDecoration: "none", color: "black" }}>
             <MenuItem>
               <Badge badgeContent={quantity} color="primary">
                 <ShoppingCartOutlined />

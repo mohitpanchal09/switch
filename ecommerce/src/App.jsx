@@ -16,6 +16,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import Success from "./pages/Success";
+import Orders from "./pages/Orders";
 function App() {
   const user = useSelector((state) => state.user.currentUser);
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/product/:id" element={<Product />}></Route>
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/success" element={<Success />} />
+        <Route path="/orders/find/:id" element={<Orders />} />
         <Route path="/cancel" element={<Cancel />} />
         <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
         <Route
