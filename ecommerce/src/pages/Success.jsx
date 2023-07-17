@@ -1,13 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 // import success from "../assets/success.png"
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Announcement from "../components/Announcement";
+import Navbar from "../components/Navbar";
 const Success = () => {
+  const navigate = useNavigate();
+  const state = useSelector((state) => state.cart);
+  useEffect(() => {
+    const clearCart = () => {
+      state.products = [];
+      state.quantity = 0;
+      state.total = 0;
+    };
+    clearCart();
+    navigate("/");
+    alert("your order was successfull");
+  }, [navigate]);
   return (
     <div
       className="grid place-items-center w-full lg:h-screen h-full
      font-raleway bg-[#F7F7F7]"
     >
+      <Announcement />
+      <Navbar />
       <div className="max-w-5xl rounded flex flex-col">
         <span className="text-green-600 text-5xl">Payment successful</span>
         <span className="text-yellow-600 text-center mt-8 text-2xl font-bold">

@@ -25,6 +25,7 @@ const Left = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
+  ${mobile({ display: "none" })}
 `;
 
 const Language = styled.span`
@@ -49,7 +50,6 @@ const Input = styled.input`
 const Center = styled.div`
   flex: 1;
   text-align: center;
-  ${mobile({ display: "none" })}
 `;
 
 const Logo = styled.h1`
@@ -79,7 +79,7 @@ const Navbar = () => {
     localStorage.removeItem(user);
     e.preventDefault();
     dispatch(logout()); // Dispatch the logout action
-    console.log(user);
+
     alert("You have been logged out");
   };
 

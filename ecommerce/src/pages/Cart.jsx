@@ -8,6 +8,7 @@ import { mobile } from "../responsive";
 import StripeCheckout from "react-stripe-checkout";
 import { useEffect, useState } from "react";
 // import { userRequest } from "../requestMethods";
+import { Link } from "react-router-dom";
 import { publicRequest, userRequest } from "../requestMethods";
 import { Navigate, useNavigate } from "react-router";
 
@@ -62,16 +63,21 @@ const Info = styled.div`
 const Product = styled.div`
   display: flex;
   justify-content: space-between;
-  ${mobile({ flexDirection: "column" })}
+  ${mobile({
+    flexDirection: "column",
+    alignItems: "center",
+  })}
 `;
 
 const ProductDetail = styled.div`
   flex: 2;
   display: flex;
+  ${mobile({ flexDirection: "column" })}
 `;
 
 const Image = styled.img`
   width: 200px;
+  ${mobile({ marginLeft: "auto", marginRight: "auto" })}
 `;
 
 const Details = styled.div`
@@ -165,7 +171,7 @@ const Cart = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const TOKEN = currentUser?.accessToken;
   const order = {
-    userId: currentUser.others._id,
+    userId: currentUser?.others?._id,
     products: cart.products.map((item) => ({
       productId: item._id,
       quantity: item._quantity,
@@ -173,6 +179,7 @@ const Cart = () => {
     amount: cart.total,
     address: "IND",
   };
+
   const checkout = async () => {
     try {
       const res = await userRequest.post("/orders", order, {
@@ -185,21 +192,24 @@ const Cart = () => {
       console.log(err);
     }
 
-    fetch("http://localhost:5000/api/checkout/create-checkout-session", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      mode: "cors",
-      body: JSON.stringify({
-        items: cart.products.map((product) => ({
-          id: product._id,
-          quantity: product.quantity,
-          price: product.price,
-          name: product.title,
-        })),
-      }),
-    })
+    fetch(
+      "https://switch-backend-v1.vercel.app/api/checkout/create-checkout-session",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode: "cors",
+        body: JSON.stringify({
+          items: cart.products.map((product) => ({
+            id: product._id,
+            quantity: product.quantity,
+            price: product.price,
+            name: product.title,
+          })),
+        }),
+      }
+    )
       .then((res) => {
         if (res.ok) return res.json();
         return res.json().then((json) => Promise.reject(json));
@@ -252,7 +262,7 @@ const Cart = () => {
                     <Remove />
                   </ProductAmountContainer>
                   <ProductPrice>
-                    $ {product.price * product.quantity}
+                    ₹ {product.price * product.quantity}
                   </ProductPrice>
                 </PriceDetail>
               </Product>
@@ -263,19 +273,19 @@ const Cart = () => {
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <SummaryItem>
               <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+              <SummaryItemPrice>₹ {cart.total}</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>$ 5.90</SummaryItemPrice>
+              <SummaryItemPrice>₹ 5.90</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>$ -5.90</SummaryItemPrice>
+              <SummaryItemPrice>₹ -5.90</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+              <SummaryItemPrice>₹ {cart.total}</SummaryItemPrice>
             </SummaryItem>
             {currentUser ? (
               <Button
@@ -286,7 +296,9 @@ const Cart = () => {
                 Checkout
               </Button>
             ) : (
-              <Button>You need to login </Button>
+              <Link to="/login">
+                <Button>You need to login </Button>
+              </Link>
             )}
           </Summary>
         </Bottom>
