@@ -15,12 +15,12 @@ import { useState } from "react";
 function App() {
   
   
-  const user = useSelector((state) => state.user.currentUser);
+  const admin = useSelector((state) => state.user.currentUser?.others.isAdmin);
   
   
   return (
     <Router >
-      { user?<>
+      { admin?<>
       <Topbar />
       <div className="container">
       <Sidebar />

@@ -15,7 +15,7 @@ export const userListSlice = createSlice({
     },
     getuserListSuccess: (state, action) => {
       state.isFetching = false;
-      state.userLists = action.payload;
+      state.users = action.payload;
     },
     getuserListFailure: (state) => {
       state.isFetching = false;
@@ -28,8 +28,8 @@ export const userListSlice = createSlice({
     },
     deleteuserListSuccess: (state, action) => {
       state.isFetching = false;
-      state.userLists.splice(
-        state.userLists.findIndex((item) => item._id === action.payload),
+      state.users.splice(
+        state.users.findIndex((item) => item._id === action.payload),
         1
       );
     },
@@ -38,49 +38,39 @@ export const userListSlice = createSlice({
       state.error = true;
     },
     //UPDATE
-    updateuserListStart: (state) => {
-      state.isFetching = true;
-      state.error = false;
-    },
-    updateuserListSuccess: (state, action) => {
-      state.isFetching = false;
-      state.userLists[
-        state.userLists.findIndex((item) => item._id === action.payload.id)
-      ] = action.payload.userList;
-    },
-    updateProductFailure: (state) => {
-      state.isFetching = false;
-      state.error = true;
-    },
+    // updateuserListStart: (state) => {
+    //   state.isFetching = true;
+    //   state.error = false;
+    // },
+    // updateuserListSuccess: (state, action) => {
+    //   state.isFetching = false;
+    //   state.userLists[
+    //     state.userLists.findIndex((item) => item._id === action.payload.id)
+    //   ] = action.payload.userList;
+    // },
+    // updateProductFailure: (state) => {
+    //   state.isFetching = false;
+    //   state.error = true;
+    // },
     //UPDATE
-    addUserStart: (state) => {
-      state.isFetching = true;
-      state.error = false;
-    },
-    addUserSuccess: (state, action) => {
-      state.isFetching = false;
-      state.users.push(action.payload);
-    },
-    addProductFailure: (state) => {
-      state.isFetching = false;
-      state.error = true;
-    },
+    // addUserStart: (state) => {
+    //   state.isFetching = true;
+    //   state.error = false;
+    // },
+    // addUserSuccess: (state, action) => {
+    //   state.isFetching = false;
+    //   state.users.push(action.payload);
+    // },
+    // addProductFailure: (state) => {
+    //   state.isFetching = false;
+    //   state.error = true;
+    // },
   },
 });
 
 export const {
-  getProductStart,
-  getProductSuccess,
-  getProductFailure,
-  deleteProductStart,
-  deleteProductSuccess,
-  deleteProductFailure,
-  updateProductStart,
-  updateProductSuccess,
-  updateProductFailure,
-  addProductStart,
-  addProductSuccess,
-  addProductFailure,
-} = productSlice.actions;
+  getuserListFailure,getuserListStart,getuserListSuccess,deleteuserListFailure,deleteuserListStart,deleteuserListSuccess
+  
+} = userListSlice.actions;
 
-export default productSlice.reducer;
+export default userListSlice.reducer;

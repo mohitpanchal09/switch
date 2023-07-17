@@ -12,12 +12,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 export default function UserList() {
   const [data, setData] = useState(userRows);
-  const users = useSelector((state) => state.user.users);
+  const users = useSelector((state) => state.userList.users);
   const dispatch = useDispatch();
   useEffect(() => {
     getUsers(dispatch);
   }, [dispatch]);
-  console.log(users);
+
   const handleDelete = (id) => {
     deleteUser(id, dispatch);
   };
