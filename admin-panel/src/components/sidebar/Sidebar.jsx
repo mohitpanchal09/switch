@@ -26,8 +26,9 @@ export default function Sidebar() {
           <h3 className="sidebarTitle">Dashboard</h3>
           <ul className="sidebarList">
             <li
-              className={`sidebarListItem ${location.pathname === "/" &&
-                "active"}`}
+              className={`sidebarListItem ${
+                location.pathname === "/" && "active"
+              }`}
             >
               <LineStyle className="sidebarIcon" />
               <Link to="/" style={{ textDecoration: "none", color: "#555" }}>
@@ -48,8 +49,9 @@ export default function Sidebar() {
           <h3 className="sidebarTitle">Quick Menu</h3>
           <ul className="sidebarList">
             <li
-              className={`sidebarListItem ${location.pathname === "/users" &&
-                "active"}`}
+              className={`sidebarListItem ${
+                location.pathname === "/users" && "active"
+              }`}
             >
               <PermIdentity className="sidebarIcon" />
               <Link
@@ -60,8 +62,9 @@ export default function Sidebar() {
               </Link>
             </li>
             <li
-              className={`sidebarListItem ${location.pathname ===
-                "/productList" && "active"}`}
+              className={`sidebarListItem ${
+                location.pathname === "/productList" && "active"
+              }`}
             >
               <Storefront className="sidebarIcon" />
               <Link
@@ -71,9 +74,18 @@ export default function Sidebar() {
                 Products
               </Link>
             </li>
-            <li className="sidebarListItem">
+            <li
+              className={`sidebarListItem ${
+                location.pathname === "/transactions" && "active"
+              }`}
+            >
               <AttachMoney className="sidebarIcon" />
-              Transactions
+              <Link
+                to="/transactions "
+                style={{ textDecoration: "none", color: "#555" }}
+              >
+                Transactions
+              </Link>
             </li>
             <li className="sidebarListItem">
               <BarChart className="sidebarIcon" />

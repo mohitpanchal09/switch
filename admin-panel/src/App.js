@@ -12,6 +12,7 @@ import NewProduct from "./pages/newProduct/NewProduct";
 import Login from "./pages/login/Login";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import Transaction from "./pages/transactions/Transaction";
 function App() {
   
   
@@ -24,6 +25,7 @@ function App() {
       <Topbar />
       <div className="container">
       <Sidebar />
+      <div className="content">
       <Routes >
     
       <Route exact path="/" element={<Home />}/>
@@ -34,7 +36,9 @@ function App() {
       <Route path="/newUser" element={<NewUser />}/>
       <Route path="/newProduct" element={<NewProduct />}/>
       <Route path="/productList" element={<ProductList />}/>
+      <Route path="/transactions" element={<Transaction />}/>
       </Routes>
+      </div>
     </div>
     </>:<Login/>
 }
