@@ -45,6 +45,16 @@ export default function Orders() {
       },
     },
   ];
+  const urlParams = new URLSearchParams(window.location.search);
+  const isSuccess = urlParams.get("success");
+
+  // Display success message if isSuccess is true
+  if (isSuccess === "true") {
+    const successMessage = document.createElement("p");
+    successMessage.textContent = "Your order was successful!";
+    // Append success message to the page
+    document.body.appendChild(successMessage);
+  }
   console.log(orders);
   return (
     <div>

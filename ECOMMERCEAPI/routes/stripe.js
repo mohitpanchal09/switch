@@ -21,8 +21,8 @@ router.post("/create-checkout-session", async (req, res)=>{
                   quantity: item.quantity
               }
           }),
-          success_url: 'https://switchshop.netlify.app/success',
-          cancel_url: 'https://switchshop.netlify.app/cancel'
+          success_url: 'https://switch-shop.vercel.app/orders?success=true',
+          cancel_url: 'https://switch-shop.vercel.app/cancel'
       })
 
       res.json({url: session.url})
