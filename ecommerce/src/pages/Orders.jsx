@@ -3,42 +3,70 @@ import Navbar from "../components/Navbar";
 import Announcement from "../components/Announcement";
 import { useLocation } from "react-router-dom";
 import { userRequest } from "../requestMethods";
+import { DataGrid } from "@mui/x-data-grid";
 import "./Orders.css";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 export default function Orders() {
   const location = useLocation();
   const id = location.pathname.split("/")[3];
   // console.log(id);
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const getOrders = async () => {
       try {
         const res = await userRequest.get("/orders/find/" + id);
         setOrders(res.data);
-      } catch {}
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+        setLoading(true);
+      }
     };
     getOrders();
   }, []);
+  const columns = [
+    { field: "_id", headerName: "Order Id", width: 420 },
+    {
+      field: "amount",
+      headerName: "Amount",
+      width: 400,
+      valueGetter: (params) => `₹${params.value}`,
+    },
+
+    {
+      field: "createdAt",
+      headerName: "Date",
+      width: 160,
+      valueGetter: (params) => {
+        const date = new Date(params.value);
+        return date.toLocaleDateString();
+      },
+    },
+  ];
   console.log(orders);
   return (
     <div>
       <Announcement />
       <Navbar />
-      <div className="container">
-        <table>
-          <tr>
-            <th>Order Id</th>
-            {/* <th>User Id</th> */}
-            <th>Amount</th>
-          </tr>
-          {orders.map((order) => (
-            <tr key={order._id}>
-              <td>{order._id}</td>
-              {/* <td>{order.userId}</td> */}
-              <td>₹{order.amount}</td>
-            </tr>
-          ))}
-        </table>
-      </div>
+
+      {loading ? (
+        <React.Fragment>
+          <Skeleton height={40} count={17} />
+        </React.Fragment>
+      ) : (
+        <div className="container">
+          <DataGrid
+            rows={orders}
+            disableSelectionOnClick
+            columns={columns}
+            pageSize={8}
+            getRowId={(row) => row._id}
+            checkboxSelection
+          />
+        </div>
+      )}
     </div>
   );
 }
