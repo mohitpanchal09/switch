@@ -9,13 +9,20 @@ import { getUsers } from "../../redux/apiCalls";
 // import { useState } from "react";
 import { deleteUser } from "../../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import React from "react";
 
 export default function UserList() {
   const [data, setData] = useState(userRows);
   const users = useSelector((state) => state.userList.users);
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   useEffect(() => {
-    getUsers(dispatch);
+    setTimeout(() => {
+      getUsers(dispatch);
+      setLoading(false);
+    }, 1000);
   }, [dispatch]);
 
   const handleDelete = (id) => {
@@ -77,14 +84,20 @@ export default function UserList() {
 
   return (
     <div className="userList">
-      <DataGrid
-        rows={users}
-        disableSelectionOnClick
-        columns={columns}
-        pageSize={8}
-        getRowId={(row) => row._id}
-        checkboxSelection
-      />
+      {loading ? ( // Display skeleton loading view if loading is true
+        <React.Fragment>
+          <Skeleton height={40} count={17} />
+        </React.Fragment>
+      ) : (
+        <DataGrid
+          rows={users}
+          disableSelectionOnClick
+          columns={columns}
+          pageSize={8}
+          getRowId={(row) => row._id}
+          checkboxSelection
+        />
+      )}
     </div>
   );
 }

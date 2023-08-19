@@ -3,15 +3,24 @@ import { DataGrid } from "@mui/x-data-grid";
 import { DeleteOutline } from "@mui/icons-material";
 
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteProduct, getProducts } from "../../redux/apiCalls";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import React from "react";
 
 export default function ProductList() {
   const products = useSelector((state) => state.product.products);
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   useEffect(() => {
-    getProducts(dispatch);
+    // getProducts(dispatch);
+    // setLoading(false);
+    setTimeout(() => {
+      getProducts(dispatch);
+      setLoading(false);
+    }, 1000);
   }, [dispatch]);
 
   const handleDelete = (id) => {
@@ -62,14 +71,20 @@ export default function ProductList() {
 
   return (
     <div className="productList">
-      <DataGrid
-        rows={products}
-        disableSelectionOnClick
-        columns={columns}
-        getRowId={(row) => row._id}
-        pageSize={8}
-        checkboxSelection
-      />
+      {loading ? ( // Display skeleton loading view if loading is true
+        <React.Fragment>
+          <Skeleton height={40} count={17} />
+        </React.Fragment>
+      ) : (
+        <DataGrid
+          rows={products}
+          disableSelectionOnClick
+          columns={columns}
+          getRowId={(row) => row._id}
+          pageSize={8}
+          checkboxSelection
+        />
+      )}
     </div>
   );
 }

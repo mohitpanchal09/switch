@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { popularProducts } from "../data";
 import Product from "./Product";
 import axios from "axios";
+import Skeleton from "react-loading-skeleton";
+import React from "react";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const Container = styled.div`
   padding: 20px;
@@ -14,6 +17,7 @@ const Container = styled.div`
 const Products = ({ cat, filters, sort }) => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -24,7 +28,10 @@ const Products = ({ cat, filters, sort }) => {
             : "https://switch-backend-v1.vercel.app/api/products"
         );
         setProducts(res.data);
-      } catch (err) {}
+        setLoading(false);
+      } catch (err) {
+        setLoading(true);
+      }
     };
     getProducts();
   }, [cat]);
@@ -58,7 +65,18 @@ const Products = ({ cat, filters, sort }) => {
 
   return (
     <Container>
-      {cat
+      {loading // Display skeleton loading view if loading is true
+        ? Array.from({ length: 7 }).map((_, index) => (
+            <div key={index}>
+              <Skeleton
+                width={340}
+                height={320}
+                style={{ margin: "20px 0px" }}
+              />
+            </div>
+          ))
+        : // Display products after data is fetched
+        cat
         ? filteredProducts.map((item) => <Product item={item} key={item.id} />)
         : products
             .slice(0, 8)
