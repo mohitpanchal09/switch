@@ -30,6 +30,7 @@ function App() {
         <Route path="/success" element={<Success />} />
         <Route path="/orders/find/:id" element={<Orders />} />
         <Route path="/cancel" element={<Cancel />} />
+        <Route path="/orders?success=true" element={<Orders />} />
         <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
         <Route
           path="/register"
