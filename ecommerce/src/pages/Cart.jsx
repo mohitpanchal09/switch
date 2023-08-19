@@ -196,7 +196,7 @@ const Cart = () => {
         },
       });
       console.log(res.data);
-      setIsCheckingOut(false);
+      // setIsCheckingOut(false);
     } catch (err) {
       console.log(err);
       setIsCheckingOut(false);
