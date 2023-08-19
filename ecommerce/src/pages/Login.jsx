@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { login } from "../redux/apiCalls";
 import { mobile } from "../responsive";
 import { useDispatch, useSelector } from "react-redux";
+import Loader from "../components/Loader";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   width: 100vw;
@@ -57,7 +59,7 @@ const Button = styled.button`
   }
 `;
 
-const Link = styled.a`
+const Link2 = styled.a`
   margin: 5px 0px;
   font-size: 12px;
   text-decoration: underline;
@@ -71,12 +73,20 @@ const Error = styled.span`
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loggingIn, setLoggingIn] = useState(false);
   const dispatch = useDispatch();
   const { isFetching, error } = useSelector((state) => state.user);
-
-  const handleClick = (e) => {
-    e.preventDefault();
-    login(dispatch, { username, password });
+  console.log(error);
+  const handleClick = async (e) => {
+    try {
+      setLoggingIn(true);
+      e.preventDefault();
+      await login(dispatch, { username, password });
+      setLoggingIn(false); // Successful login, set loggingIn to false
+      // error.error = false;
+    } catch (err) {
+      setLoggingIn(false); // Error occurred, set loggingIn to false
+    }
   };
   return (
     <Container>
@@ -92,12 +102,21 @@ const Login = () => {
             type="password"
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button onClick={handleClick} disabled={isFetching}>
-            LOGIN
-          </Button>
+          {!loggingIn ? (
+            <Button onClick={handleClick} disabled={isFetching}>
+              LOGIN
+            </Button>
+          ) : (
+            <Loader />
+          )}
           {error && <Error>Something went wrong...</Error>}
-          <Link>DO NOT YOU REMEMBER THE PASSWORD?</Link>
-          <Link>CREATE A NEW ACCOUNT</Link>
+          <Link2>DO NOT YOU REMEMBER THE PASSWORD?</Link2>
+          <Link2>
+            {" "}
+            <Link to="/register" style={{ color: "black" }}>
+              CREATE A NEW ACCOUNT
+            </Link>
+          </Link2>
         </Form>
       </Wrapper>
     </Container>
