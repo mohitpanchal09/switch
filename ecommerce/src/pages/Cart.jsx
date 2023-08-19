@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { publicRequest, userRequest } from "../requestMethods";
 import { Navigate, useNavigate } from "react-router";
+import Loader from "../components/Loader";
 
 const Container = styled.div``;
 
@@ -163,8 +164,14 @@ const Button = styled.button`
   color: white;
   font-weight: 600;
 `;
+const LoaderContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const Cart = () => {
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
   const cart = useSelector((state) => state.cart);
   // console.log(cart);
   const KEY = process.env.REACT_APP_STRIPE;
@@ -182,14 +189,17 @@ const Cart = () => {
 
   const checkout = async () => {
     try {
+      setIsCheckingOut(true);
       const res = await userRequest.post("/orders", order, {
         headers: {
           Authorization: `Bearer ${TOKEN}`,
         },
       });
       console.log(res.data);
+      setIsCheckingOut(false);
     } catch (err) {
       console.log(err);
+      setIsCheckingOut(false);
     }
 
     fetch(
@@ -288,13 +298,21 @@ const Cart = () => {
               <SummaryItemPrice>₹ {cart.total}</SummaryItemPrice>
             </SummaryItem>
             {currentUser ? (
-              <Button
-                onClick={checkout}
-                className="bg-green-400 text-white px-8 py-4 rounded-md text-2xl 
+              <>
+                {!isCheckingOut ? (
+                  <Button
+                    onClick={checkout}
+                    className="bg-green-400 text-white px-8 py-4 rounded-md text-2xl 
               font-semibold"
-              >
-                Checkout
-              </Button>
+                  >
+                    CHECKOUT
+                  </Button>
+                ) : (
+                  <LoaderContainer>
+                    <Loader />
+                  </LoaderContainer>
+                )}
+              </>
             ) : (
               <Link to="/login">
                 <Button>You need to login </Button>

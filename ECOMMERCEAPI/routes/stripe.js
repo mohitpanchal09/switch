@@ -21,7 +21,7 @@ router.post("/create-checkout-session", async (req, res)=>{
                   quantity: item.quantity
               }
           }),
-          success_url: 'https://switch-shop.vercel.app/orders?success=true',
+          success_url: 'https://switch-shop.vercel.app/orders/success',
           cancel_url: 'https://switch-shop.vercel.app/cancel'
       })
 
