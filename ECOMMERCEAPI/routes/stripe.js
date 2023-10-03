@@ -21,8 +21,8 @@ router.post("/create-checkout-session", async (req, res)=>{
                   quantity: item.quantity
               }
           }),
-          success_url: 'https://switch-shop.vercel.app/orders/success',
-          cancel_url: 'https://switch-shop.vercel.app/cancel'
+          success_url: 'http://localhost:3000/orders/success',
+          cancel_url: 'http://localhost:3000/cancel'
       })
 
       res.json({url: session.url})
